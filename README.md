@@ -43,7 +43,7 @@ slug: chi-sono
 Questo è il mio sito ed il mio nome è Francesco!
 ~~~~
 
-**File N.2 :** _pages/en/who_am_i.md
+**File N.2 :** _pages/en/who_i_am.md
 ~~~~jade
 ---
 title: Who I am
