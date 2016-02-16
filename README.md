@@ -2,4 +2,6 @@
 
 **Cos'è Aurora ?**
   
-Aurora è (o per meglio dire, sarà) un generatore di codice HTML5 scritto in Python. Sfruttando Bootstrap di Twitter, cerca di creare dei siti internet e delle piccole pagine con poco sforzo, scrivendo poche righe di codice.
+Aurora sarà un piccolo generatore di siti web statici (un static site generator per dirla all'inglese..) basato su python, pyjade e l'utilizzo di twitter bootstrap. L'idea di fondo è che sfruttando Bootstrap, il programma cercherà di creare dei siti internet e delle piccole pagine limitate *ma* con realizzabili con poco sforzo.
+
+Non sarà mai un generatore con fiocchi e controfiocchi come [jekyll](http://jekyllrb.com) o [Pelican](http://www.getpelican.com), ma nei miei desideri dovrebbe essere sufficiente a realizzare con poco sforzo molte belle cosucce.
