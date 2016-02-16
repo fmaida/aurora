@@ -20,6 +20,7 @@ Io pensavo ad un sistema che sia una via di mezzo fra il Front Matter in formato
 * Data di creazione/ultima modifica
 * Tags associati alla pagina
 * Lingua in cui sono scritti i contenuti della pagina
+* Ordine con cui dovrebbe essere processata la pagina (1 = Prima pagina da processare, 2 = Seconda, ...)
 * Riferimento all'articolo originale, in modo che Aurora possa capire che un file contiene la traduzione di un'altro file. Per utilizzare lo stesso nome dato al campo da Pelican, io lo chiamerei "slug". Il campo "slug" fa riferimento al titolo della pagina, con gli spazi sostituiti da lineette.
 
 Ovviamente l'inserimento di tutti questi meta-dati dovrebbe essere del tutto opzionale.
@@ -42,3 +43,18 @@ slug: chi-sono
 Questo è il mio sito ed il mio nome è Francesco!
 ~~~~
 
+**File N.2 :** _pages/en/who_am_i.md
+~~~~jade
+---
+title: Who I am
+date: 2016-02-16 18:54
+language: en
+slug: chi-sono
+---
+
+Nota che i campi slug sia nel file "italiano" che in quello "inglese" hanno lo stesso valore ("chi-sono"), ad indicare qual'è il file originale.
+
+# Benvenuti
+
+Questo è il mio sito ed il mio nome è Francesco!
+~~~~
