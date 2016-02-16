@@ -52,9 +52,9 @@ language: en
 slug: chi-sono
 ---
 
-Nota che i campi slug sia nel file "italiano" che in quello "inglese" hanno lo stesso valore ("chi-sono"), ad indicare qual'è il file originale.
+# Welcome
 
-# Benvenuti
-
-Questo è il mio sito ed il mio nome è Francesco!
+This is my website and my name is Francesco!
 ~~~~
+
+Nota che i campi slug sia nel file "italiano" che in quello "inglese" hanno lo stesso valore ("chi-sono"), ad indicare qual'è il file originale.
