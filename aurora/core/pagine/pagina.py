@@ -9,42 +9,36 @@ class Pagina:
 
 	def __init__(self, p_file):
 
-		parte_yaml, parte_testo = self.metodo2(p_file)
+		parte_yaml, parte_testo = self.metodo1(p_file)
 
-		# print(list(yaml.load_all(parte_yaml))[0])
-		# print("\n\n")
-		# print(mistune.markdown(parte_testo))
+		print("PARTE YAML:\n{0}".format(str(parte_yaml)))
+		print()
+		print(parte_testo)
 
 	def metodo1(self, p_file):
 		with open(p_file) as f:
 			leggi_yaml = False
 			parte_yaml = ""
 			parte_testo = ""
-			testo = f.readline()
-			while testo != "":
-				if testo == "---\n":
-					if not leggi_yaml:
-						parte_yaml += testo
-						leggi_yaml = True
-					else:
-						parte_yaml += testo
-						leggi_yaml = False
+			for riga in f:
+				if riga == "---\n":
+					leggi_yaml = not leggi_yaml
 				else:
 					if leggi_yaml:
-						parte_yaml += testo
+						parte_yaml += riga
 					else:
-						parte_testo += testo
-				testo = f.readline()
+						parte_testo += riga
 			f.close()
-		return parte_yaml, parte_testo
+		return yaml.load(parte_yaml), mistune.markdown(parte_testo)
 
 	def metodo2(self, p_file):
 		with open(p_file) as f:
 			testo = f.read()
 
 		import re
-		pattern = re.compile("[\-]{3,}(.|[\r\n])+[\-]{3,}")  # /gm
-		parte_yaml = re.match(pattern, testo)
-		print(str(parte_yaml.group(2)))
+		pattern = re.compile("([\-]{3,}[.\s\S]*[\-]{3,})([.\s\S]*)")  # /gm
+		ricerca = re.match(pattern, testo)
+		parte_yaml = ricerca.group(1)
+		parte_testo = ricerca.group(2)
 		f.close()
-		return parte_yaml, None  # parte_testo
+		return parte_yaml, parte_testo
