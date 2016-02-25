@@ -14,8 +14,6 @@ class Tema:
 	parametri passati sotto forma di dizionario/oggetto
 	"""
 
-	# TODO: Cambiare il nome alla classe Pagina... dovrebbe avere un nome tipo "Convertitore" o roba simile
-
 	def __init__(self, p_percorso_tema: str):
 		"""
 		Inizializza la classe passandogli subito i parametri generali
