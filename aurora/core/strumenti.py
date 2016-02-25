@@ -2,10 +2,6 @@ import os
 import pathlib
 
 
-def prepara_per_url(p_nome_file):
-    return p_nome_file.replace(" ", "-").lower()
-
-
 def verifica_dipendenze():
 
     # Installa pyjade se è necessario
@@ -17,10 +13,10 @@ def verifica_dipendenze():
 
     # Installa pyyaml se è necessario
     try:
-        import pyyaml
+        import yaml
     except ImportError:
         import pip
-        pip.main(["install", "pyyaml", "-q"])
+        pip.main(["install", "yaml", "-q"])
 
 def inizializza():
 

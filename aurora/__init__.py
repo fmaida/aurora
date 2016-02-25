@@ -1,6 +1,5 @@
-from aurora.core.convertitore import Convertitore
+from aurora.core.tema import Tema
 from aurora.core.parametri import Parametri
-from aurora.core.strumenti import prepara_per_url
 from aurora.ext.database import Software
 
 
