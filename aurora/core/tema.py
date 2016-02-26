@@ -4,7 +4,7 @@ from jinja2.exceptions import TemplateNotFound
 
 from aurora.core.preferenze \
 	import Preferenze, PreferenzaNonTrovataEx, FilePreferenzeNonTrovatoEx
-from aurora.core.pagine import Pagine
+from aurora.core.pagine import Pagina
 
 
 class Tema:
@@ -51,15 +51,15 @@ class Tema:
 	def set_preferenze_sito(self, p_preferenze):
 		self._preferenze_sito = p_preferenze
 
-	def render(self, p_pagine: Pagine, p_layout_default: str = "default") -> str:
+	def render(self, p_pagina: Pagina, p_layout_default: str = "default") -> str:
 		"""
 		Crea un file HTML a partire da un template/layout
 		indicato ed utilizzando i parametri globali e
 		quelli passati dall'utente.
 
 		Args:
-			p_pagine (Pagine):
-				Un'istanza della classe Pagine che conterrà le pagine da convertire
+			p_pagina (Pagine):
+				Un'istanza della classe Pagina che conterrà la pagina da convertire
 			p_layout_default (String):
 				Se non viene indicato nelle preferenze di una pagina,
 				per il rendering utilizza questo layout
@@ -69,33 +69,31 @@ class Tema:
 			appena costruita dal metodo
 		"""
 
-		for pagina in p_pagine:
+		# Decide quale layout deve utilizzare
+		# per fare il rendering della pagina
+		try:
+			# La pagina in questione ha nella parte YAML
+			# un parametro "layout" che specifica come
+			# l'utente vuole renderizzarla ?
+			layout = p_pagina.preferenze.get("layout")
+		except PreferenzaNonTrovataEx:
+			# No. Allora decide il programma per l'utente.
+			layout = p_layout_default
 
-			# Decide quale layout deve utilizzare
-			# per fare il rendering della pagina
-			try:
-				# La pagina in questione ha nella parte YAML
-				# un parametro "layout" che specifica come
-				# l'utente vuole renderizzarla ?
-				layout = pagina.preferenze.get("layout")
-			except PreferenzaNonTrovataEx:
-				# No. Allora decide il programma per l'utente.
-				layout = p_layout_default
+		# Fa caricare il template in memoria a Jinja2
+		try:
+			template = self.jinja2.get_template(layout + ".html")
+		except TemplateNotFound:
+			template = self.jinja2.get_template(p_layout_default + ".html")
 
-			# Fa caricare il template in memoria a Jinja2
-			try:
-				template = self.jinja2.get_template(layout + ".html")
-			except TemplateNotFound:
-				template = self.jinja2.get_template(p_layout_default + ".html")
+		# Prepara il dizionario con i parametri da passare a Jinja2,
+		# unendo quelli globali del sito a quelli del tema ed
+		# aggiunge quelli della pagina che sta renderizzando
+		preferenze = Preferenze()
+		preferenze.aggiungi("site", self._preferenze_sito.esporta())
+		preferenze.aggiungi("theme", self._preferenze_tema.esporta())
+		preferenze.aggiungi("page", p_pagina.preferenze.esporta())
+		preferenze.aggiungi("content", p_pagina.contenuto)
 
-			# Prepara il dizionario con i parametri da passare a Jinja2,
-			# unendo quelli globali del sito a quelli del tema ed
-			# aggiunge quelli della pagina che sta renderizzando
-			preferenze = Preferenze()
-			preferenze.aggiungi("site", self._preferenze_sito.get())
-			preferenze.aggiungi("theme", self._preferenze_tema.get())
-			preferenze.aggiungi("page", pagina.preferenze.get())
-			preferenze.aggiungi("content", pagina.contenuto)
-
-			# Renderizza la pagina e la restituisce
-			yield pagina, template.render(preferenze.get())
+		# Renderizza la pagina e la restituisce
+		return template.render(preferenze.esporta())

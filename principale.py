@@ -2,6 +2,7 @@ import os
 
 from aurora.core.pagine import Pagina, Pagine
 from aurora.core.tema import Tema
+from aurora.core.permalink import Permalink
 from aurora.core.preferenze import Preferenze, PreferenzaNonTrovataEx
 
 # crea_pagine()
@@ -18,7 +19,6 @@ except PreferenzaNonTrovataEx:
 percorso_tema = os.path.join("_themes", nome_tema)
 tema = Tema(percorso_tema)
 tema.set_preferenze_sito(preferenze)
-
-for pagina, output in tema.render(lista, "page"):
-	pagina._output = output
-	print(pagina._output)
+permy = Permalink("_site")
+permy.set_tema(tema)
+permy.render(lista, "page")

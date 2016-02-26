@@ -24,14 +24,14 @@ class Preferenze:
 	def importa(self, p_testo_yaml: str):
 		self._preferenze = yaml.load(p_testo_yaml)
 
-	def get(self, p_elemento: str = None):
-		if p_elemento is None:
-			return self._preferenze
-		else:
-			try:
-				return self._preferenze[p_elemento]
-			except KeyError:
-				raise PreferenzaNonTrovataEx
+	def get(self, p_elemento: str):
+		try:
+			return self._preferenze[p_elemento]
+		except KeyError:
+			raise PreferenzaNonTrovataEx
+
+	def esporta(self):
+		return self._preferenze
 
 	def aggiungi(self, p_elemento: str, p_valore):
 		self._preferenze[p_elemento] = p_valore
