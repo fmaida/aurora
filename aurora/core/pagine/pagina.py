@@ -2,7 +2,7 @@ import os
 import mistune
 import unicodedata
 
-from aurora.core.preferenze import Preferenze, PreferenzaNonTrovataEx
+from aurora.core.attributi import Attributi, TagNonTrovato
 
 
 class Pagina:
@@ -11,8 +11,7 @@ class Pagina:
 	"""
 
 	def __init__(self, p_file):
-		self.url = ""
-		self.preferenze = Preferenze()
+		self.meta = Attributi()
 		self.contenuto = ""
 		self.importa(p_file)
 
@@ -31,16 +30,16 @@ class Pagina:
 						parte_testo += riga
 			f.close()
 
-		self.preferenze.importa(parte_yaml)
+		self.meta.importa(parte_yaml)
 		self.contenuto = mistune.markdown(parte_testo)
 		try:
 			# Se l'articolo / pagina ha una proprietà "title" da usare..
-			titolo = self.preferenze.get("title")
-			self.url = self.decidi_url(titolo)
-		except PreferenzaNonTrovataEx:
+			titolo = self.meta.title
+			self.meta.url = self.decidi_url(titolo)
+		except TagNonTrovato:
 			# Altrimenti come nome usa quello del file senza estensione
 			nome, estensione = os.path.splitext(os.path.basename(p_file))
-			self.url = self.decidi_url(nome)
+			self.meta.url = self.decidi_url(nome)
 
 	@staticmethod
 	def decidi_url(p_nome):
@@ -59,8 +58,8 @@ class Pagina:
 
 	def __str__(self) -> str:
 		temp = "FILE: {0}\n".format(self.url)
-		temp += str(self.preferenze)
-		temp += self.contenuto
+		temp += str(self.meta)
+		temp += self.meta.content
 		return temp
 
 	# def metodo2(self, p_file):

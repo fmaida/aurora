@@ -2,8 +2,8 @@ import os
 from jinja2 import FileSystemLoader, Environment
 from jinja2.exceptions import TemplateNotFound
 
-from aurora.core.preferenze \
-	import Preferenze, PreferenzaNonTrovataEx, FilePreferenzeNonTrovatoEx
+from aurora.core.attributi \
+	import Attributi, TagNonTrovato, FilePreferenzeNonTrovato
 from aurora.core.pagine import Pagina
 
 
@@ -29,17 +29,17 @@ class Tema:
 			None
 		"""
 
-		self._preferenze_sito = Preferenze()
+		self._preferenze_sito = Attributi()
 
 		# Carica le eventuali preferenze del tema
 		percorso_config = os.path.join(p_percorso_tema, "_config.yml")
 		try:
 			# Carica (o perlomeno tenta) il file delle preferenze _config.yml
-			self._preferenze_tema = Preferenze(percorso_config)
-		except FilePreferenzeNonTrovatoEx:
+			self._preferenze_tema = Attributi(percorso_config)
+		except FilePreferenzeNonTrovato:
 			# Non esiste un file _config.yml con le preferenze del tema
 			# Usa quelle di default
-			self._preferenze_tema = Preferenze()
+			self._preferenze_tema = Attributi()
 
 		# Chiama in causa Jinja2 e gli spiega da quale
 		# cartella dovrà tirarsi su i template/layout da utilizzare
@@ -75,8 +75,8 @@ class Tema:
 			# La pagina in questione ha nella parte YAML
 			# un parametro "layout" che specifica come
 			# l'utente vuole renderizzarla ?
-			layout = p_pagina.preferenze.get("layout")
-		except PreferenzaNonTrovataEx:
+			layout = p_pagina.meta.layout
+		except TagNonTrovato:
 			# No. Allora decide il programma per l'utente.
 			layout = p_layout_default
 
@@ -89,11 +89,11 @@ class Tema:
 		# Prepara il dizionario con i parametri da passare a Jinja2,
 		# unendo quelli globali del sito a quelli del tema ed
 		# aggiunge quelli della pagina che sta renderizzando
-		preferenze = Preferenze()
-		preferenze.aggiungi("site", self._preferenze_sito.esporta())
-		preferenze.aggiungi("theme", self._preferenze_tema.esporta())
-		preferenze.aggiungi("page", p_pagina.preferenze.esporta())
-		preferenze.aggiungi("content", p_pagina.contenuto)
+		preferenze = Attributi()
+		preferenze["site"] = self._preferenze_sito.esporta()
+		preferenze["theme"] = self._preferenze_tema.esporta()
+		preferenze["page"] = p_pagina.meta.esporta()
+		preferenze["content"] = p_pagina.contenuto
 
 		# Renderizza la pagina e la restituisce
 		return template.render(preferenze.esporta())

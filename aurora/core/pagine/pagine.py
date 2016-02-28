@@ -1,13 +1,16 @@
 import os
 
 from aurora.core.pagine.pagina import Pagina
+from aurora.core.attributi import Attributi, TagNonTrovato, FilePreferenzeNonTrovato
 
 
 class Pagine:
 
 	def __init__(self, p_percorso: str):
 		self._percorso = p_percorso
+		self._preferenze = Attributi()
 		self._elenco = []
+		self._carica_preferenze()
 		self._carica_tutti()
 
 	def aggiungi(self, p_pagina: Pagina):
@@ -16,10 +19,20 @@ class Pagine:
 	def rimuovi(self, p_indice: int):
 		self._elenco.remove(p_indice)
 
+	def _carica_preferenze(self):
+		"""
+		Verifica se esiste un file delle preferenze nella cartella indicata
+		"""
+
+		file_preferenze = os.path.join(self._percorso, "_config.yml")
+		if os.path.exists(file_preferenze):
+			self._preferenze = Attributi(file_preferenze)
+
 	def _carica_tutti(self):
 		"""
 		Carica tutti i files presenti nella cartella indicata
 		"""
+
 		for elemento in os.scandir(self._percorso):
 			nome, estensione = os.path.splitext(elemento.name)
 			estensione = estensione.lower()
@@ -37,8 +50,8 @@ class Pagine:
 		modificato = False
 		for indice1, pagina1 in enumerate(self._elenco):
 			for indice2, pagina2 in enumerate(self._elenco):
-				if indice2 != indice1 and pagina2.url == pagina1.url:
-					pagina2.url += "-"
+				if indice2 != indice1 and pagina2.meta.url == pagina1.meta.url:
+					pagina2.meta.url += "-"
 					modificato = True
 				if modificato:
 					break

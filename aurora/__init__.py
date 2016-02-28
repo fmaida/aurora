@@ -1,5 +1,5 @@
 from aurora.core.tema import Tema
-from aurora.core.parametri import Parametri
+from aurora.core.__gigetto_da_cancellare import Parametri
 from aurora.ext.database import Software
 
 

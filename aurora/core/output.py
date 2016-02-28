@@ -1,11 +1,11 @@
 import os
 
-from aurora.core.preferenze import Preferenze, PreferenzaNonTrovataEx
+from aurora.core.attributi import Attributi, TagNonTrovato
 from aurora.core.tema import Tema
 from aurora.core.pagine import Pagine, Pagina
 
 
-class Permalink:
+class Output:
 
 	def __init__(self, p_cartella_output: str):
 		self._cartella_output = p_cartella_output
@@ -25,9 +25,8 @@ class Permalink:
 
 	def render(self, p_pagine: Pagine, p_layout_default: str = "default"):
 
-		output = ""
 		for pagina in p_pagine:
 			output = self.tema.render(pagina, p_layout_default)
-			with open(self._get_percorso_file_output(pagina.url + ".html"), "w") as f:
+			with open(self._get_percorso_file_output(pagina.meta.url + ".html"), "w") as f:
 				f.write(output)
 				f.close()
