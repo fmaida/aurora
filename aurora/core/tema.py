@@ -80,6 +80,11 @@ class Tema:
 			# No. Allora decide il programma per l'utente.
 			layout = p_layout_default
 
+
+		# PATCH DA RIMUOVERE
+		layout = "default"
+
+
 		# Fa caricare il template in memoria a Jinja2
 		try:
 			template = self.jinja2.get_template(layout + ".html")
