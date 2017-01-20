@@ -25,14 +25,6 @@ Io pensavo ad un sistema che sia una via di mezzo fra il Front Matter in formato
 
 Ovviamente l'inserimento di tutti questi meta-dati dovrebbe essere del tutto opzionale.
 
-#### Quali sono le dipendenze per far funzionare Aurora ?
-
-Aurora attualmente necessità di queste librerie esterne Python:
-
-* Jinja2 (>= 2.9.4)
-* PyYAML (>= 3.12)
-* markdown2 (>= 2.3.2)
- 
 #### Puoi fare un'esempio di come dovrebbe essere scritta una pagina ?
 
 Certo:
@@ -66,3 +58,11 @@ This is my website and my name is Francesco!
 ~~~~
 
 Nota che i campi slug sia nel file "italiano" che in quello "inglese" hanno lo stesso valore ("chi-sono"), ad indicare qual'è il file originale.
+
+#### Quali sono le dipendenze per far funzionare Aurora ?
+
+Aurora attualmente necessità di queste librerie esterne Python:
+
+* Jinja2 (>= 2.9.4)
+* PyYAML (>= 3.12)
+* markdown2 (>= 2.3.2)
