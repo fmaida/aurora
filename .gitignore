@@ -116,3 +116,6 @@ target/
 
 # pyenv
 .python-version
+
+# Mac
+.DS_Store
